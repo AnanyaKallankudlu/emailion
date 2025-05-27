@@ -1,6 +1,6 @@
 // pages/api/inbound-email.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Client } from "@notionhq/client";
+import { Client, PageObjectResponse } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 
@@ -26,29 +26,26 @@ export default async function handler(
     console.log("Subject:", SubjectText);
     console.log("Content:", EmailBody);
     const result2 = await notion.databases.query({
-      database_id: process.env.NOTION_DB_ID,
+      database_id: process.env.NOTION_DB_ID!,
     });
-    console.log(result2.results[0].properties);
+    const props = (result2.results[0] as PageObjectResponse).properties;
 
     // Create a Notion page
     await notion.pages.create({
       parent: {
-        database_id: process.env.NOTION_DB_ID,
+        database_id: process.env.NOTION_DB_ID!,
       },
       properties: {
         Subject: {
           type: "title",
-          id: "123",
           title: [{ text: { content: SubjectText } }],
         },
         "Recipient Email": {
           type: "email",
-          id: "789",
           email: From,
         },
         Content: {
           type: "rich_text",
-          id: "567",
           rich_text: [{ text: { content: EmailBody } }],
         },
       },
