@@ -29,6 +29,7 @@ export default async function handler(
       database_id: process.env.NOTION_DB_ID!,
     });
     const props = (result2.results[0] as PageObjectResponse).properties;
+    console.log(props);
 
     // Create a Notion page
     await notion.pages.create({
