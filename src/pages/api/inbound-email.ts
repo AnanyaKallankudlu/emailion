@@ -1,6 +1,5 @@
 // pages/api/inbound-email.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-require("dotenv").config();
 import { Client } from "@notionhq/client";
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
